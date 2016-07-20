@@ -250,3 +250,8 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Project Specifics
+Infograph/Infograph.vcxproj
+Infograph/Infograph.vcxproj.filters
+Infograph.sln
