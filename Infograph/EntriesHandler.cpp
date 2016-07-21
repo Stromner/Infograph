@@ -14,7 +14,6 @@ Once the data is constructed main loops for input until '0' is entered. Input is
 of the objects that main should unlock.
 **/
 EntriesHandler::EntriesHandler() {
-	std::vector<std::shared_ptr<Entry>> list;
 	std::ifstream infile("Data.txt");
 	std::string line;
 
@@ -27,7 +26,7 @@ EntriesHandler::EntriesHandler() {
 			std::vector<std::string> data;
 			boost::split(data, line, boost::is_any_of("\t"), boost::token_compress_on);
 			std::unique_ptr<Entry> ptr(new Entry(data.at(0)));
-			list.push_back(std::move(ptr));
+			_list.push_back(std::move(ptr));
 		}
 	}
 
@@ -47,9 +46,9 @@ EntriesHandler::EntriesHandler() {
 			boost::split(data_new, data.at(1), boost::is_any_of(","), boost::token_compress_on);
 			// Find the entries that are listed as requires
 			for (unsigned int i = 0; i < data_new.size(); i++) {
-				for (unsigned int j = 0; j < list.size(); j++) {
-					if (list.at(j)->getName().compare(data_new.at(i)) == 0) {
-						requires.push_back(list.at(j));
+				for (unsigned int j = 0; j < _list.size(); j++) {
+					if (_list.at(j)->getName().compare(data_new.at(i)) == 0) {
+						requires.push_back(_list.at(j));
 					}
 				}
 			}
@@ -57,23 +56,54 @@ EntriesHandler::EntriesHandler() {
 			// Find the entries that are listed as unlocks
 			boost::split(data_new, data.at(2), boost::is_any_of(","), boost::token_compress_on);
 			for (unsigned int i = 0; i < data_new.size(); i++) {
-				for (unsigned int j = 0; j < list.size(); j++) {
-					if (list.at(j)->getName().compare(data_new.at(i)) == 0) {
-						unlocks.push_back(list.at(j));
+				for (unsigned int j = 0; j < _list.size(); j++) {
+					if (_list.at(j)->getName().compare(data_new.at(i)) == 0) {
+						unlocks.push_back(_list.at(j));
 					}
 				}
 			}
 
 			// Find the element that have these lists
-			for (unsigned int i = 0; i < list.size(); i++) {
-				if (list.at(i)->getName().compare(data.at(0)) == 0) {
-					list.at(i)->initEntry(requires, unlocks);
-					std::cout << "Created entity \"" << list.at(i)->getName() << "\"" << std::endl;
+			for (unsigned int i = 0; i < _list.size(); i++) {
+				if (_list.at(i)->getName().compare(data.at(0)) == 0) {
+					_list.at(i)->initEntry(requires, unlocks);
+					std::cout << "Created entity \"" << _list.at(i)->getName() << "\"" << std::endl;
 				}
 			}
 		}
 	}
 	infile.close();
+}
+
+void EntriesHandler::calculateTier() {
+	int current_tier = 0;
+
+	// Find the entities that are going to be the base. These enteties are defined as the
+	// require list is empty
+	for (unsigned int i = 0; i < _list.size();i++) {
+		if (_list.at(i)->getRequires().size() == 0) {
+			_list.at(i)->setTier(0);
+		}
+	}
+
+	// Calculate the remaining entries off the base entries. An entry's tier needs the require 
+	// list to have all defined values (i.e no '-1' values) and requires that are less than
+	// the current tier that's being calculated.
+	while (current_tier <10) {
+		for (unsigned int i = 0; i < _list.size(); i++) {
+			bool is_current_tier = true;
+			for (unsigned int j = 0; j < _list.at(i)->getRequires().size(); j++) {
+				if (_list.at(i)->getRequires().at(j)->getTier() >= current_tier || _list.at(i)->getRequires().at(j)->getTier() == -1) {
+					is_current_tier = false;
+				}
+			}
+			if (is_current_tier && _list.at(i)->getTier() == -1) {
+				_list.at(i)->setTier(current_tier);
+			}
+		}
+
+		current_tier += 1;
+	}
 }
 
 std::vector<std::shared_ptr<Entry>> EntriesHandler::getList() {

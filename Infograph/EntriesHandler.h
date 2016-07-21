@@ -11,6 +11,7 @@
 class EntriesHandler {
 public:
 	EntriesHandler(); // Reads all the entries from a file and input it into a list
+	void calculateTier();
 	std::vector<std::shared_ptr<Entry>> getList();
 private:
 	std::vector<std::shared_ptr<Entry>> _list;

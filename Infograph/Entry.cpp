@@ -14,6 +14,18 @@ std::string Entry::getName() {
 	return _name;
 }
 
+void Entry::setTier(int tier) {
+	_tier = tier;
+}
+
+int Entry::getTier() {
+	return _tier;
+}
+
+std::vector<std::shared_ptr<Entry>> Entry::getRequires() {
+	return _requires;
+}
+
 bool Entry::unlock() {
 	for (unsigned int i = 0; i < _requires.size(); i++) {
 		if (_requires.at(i)->_unlocked == true) {

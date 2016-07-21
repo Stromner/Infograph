@@ -5,6 +5,7 @@ void consoleCom(std::vector<std::shared_ptr<Entry>>);
 
 int main() {
 	std::unique_ptr<EntriesHandler> eh(new EntriesHandler());
+	eh->calculateTier();
 	consoleCom(eh->getList());
 
 	return 0;
