@@ -81,7 +81,7 @@ void EntriesHandler::calculateTier() {
 	// Find the entities that are going to be the base. These enteties are defined as the
 	// require list is empty
 	for (unsigned int i = 0; i < _list.size();i++) {
-		if (_list.at(i)->getRequires().size() == 0) {
+		if (_list.at(i)->getRequires().empty()) {
 			_list.at(i)->setTier(0);
 		}
 	}
@@ -89,7 +89,7 @@ void EntriesHandler::calculateTier() {
 	// Calculate the remaining entries off the base entries. An entry's tier needs the require 
 	// list to have all defined values (i.e no '-1' values) and requires that are less than
 	// the current tier that's being calculated.
-	while (current_tier <10) {
+	while (continueCalculate()) {
 		for (unsigned int i = 0; i < _list.size(); i++) {
 			bool is_current_tier = true;
 			for (unsigned int j = 0; j < _list.at(i)->getRequires().size(); j++) {
@@ -108,5 +108,14 @@ void EntriesHandler::calculateTier() {
 
 std::vector<std::shared_ptr<Entry>> EntriesHandler::getList() {
 	return _list;
+}
+
+bool EntriesHandler::continueCalculate() {
+	for (unsigned int i = 0; i < _list.size(); i++) {
+		if (_list.at(i)->getTier() == -1) {
+			return true;
+		}
+	}
+	return false;
 }
 #pragma warning( pop )  

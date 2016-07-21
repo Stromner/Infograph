@@ -14,6 +14,7 @@ public:
 	void calculateTier();
 	std::vector<std::shared_ptr<Entry>> getList();
 private:
+	bool continueCalculate();
 	std::vector<std::shared_ptr<Entry>> _list;
 };
 
