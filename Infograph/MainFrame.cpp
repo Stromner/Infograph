@@ -6,12 +6,17 @@ MainFrame::MainFrame(const wxString& title, std::shared_ptr<EntriesHandler> eh) 
 }
 
 void MainFrame::createButtons(std::shared_ptr<EntriesHandler> eh) {
+	int xpos = 0;
+	int tier = 0;
 	for (unsigned int i = 0; i < eh->getList().size(); i++) {
-		std::unique_ptr<wxButton> button(new wxButton(_panel, wxID_ANY, eh->getList().at(i)->getName(), wxPoint(0 + eh->getList().at(i)->getTier()*80, 0 + i * 80)));
+		if (tier < eh->getList().at(i)->getTier()) {
+			tier++;
+			xpos = 0;
+		}
+		std::unique_ptr<wxButton> button(new 
+			wxButton(_panel, wxID_ANY, eh->getList().at(i)->getName(), wxPoint(tier*150, xpos)));
 		button->Show(true);
 		_buttons.push_back(std::move(button));
-
-		//std::unique_ptr<Entry> ptr(new Entry(data.at(0)));
-		//_list.push_back(std::move(ptr));
+		xpos += 100;
 	}
 }
