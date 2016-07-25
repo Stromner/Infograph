@@ -23,7 +23,6 @@ public:
 	~Main();
 	virtual bool OnInit() override;
 private:
-	void consoleCom(std::vector<std::shared_ptr<Entry>>);
 	std::thread console_com;
 };
 
