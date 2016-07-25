@@ -1,7 +1,6 @@
 #include <wx\app.h>
 #include "EntriesHandler.h"
 #include <iostream>
-#include <thread> 
 
 #ifdef _UNICODE
 #ifdef _DEBUG
@@ -20,9 +19,8 @@
 class Main : public wxApp{
 public:
 	Main();
-	~Main();
 	virtual bool OnInit() override;
 private:
-	std::thread console_com;
+	std::shared_ptr<EntriesHandler> _eh;
 };
 

@@ -1,15 +1,16 @@
 #include "Main.h"
-#include <wx\frame.h>
+#include "MainFrame.h"
 
 wxIMPLEMENT_APP(Main);
 
 Main::Main() {
-	std::unique_ptr<EntriesHandler> eh(new EntriesHandler());
-	eh->calculateTier();
+	_eh.reset(new EntriesHandler());
+	_eh->calculateTier();
 }
 
 bool Main::OnInit() {
-	wxFrame* mainFrame = new wxFrame(nullptr, wxID_ANY, "Infograph");
+	wxFrame* mainFrame = new MainFrame("Infograph", _eh);
 	mainFrame->Show(true);
+
 	return true;
 }

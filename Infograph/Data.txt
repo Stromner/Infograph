@@ -1,8 +1,8 @@
 # Name\tRequires(comma separated)\tUnlocks(comma separated)\n
 # Space are needed for empty entries
 A	 	C,D
+E	C,D	F
 B	 	C,F
 C	A,B	E
 D	A	E
-E	C,D	F
 F	B,E	 

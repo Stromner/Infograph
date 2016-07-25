@@ -6,6 +6,8 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
+bool tier_key(std::shared_ptr<Entry>, std::shared_ptr<Entry>);
+
 /**
 Reads graph data from Data.txt, the data is used to create the objects and their requires
 and unlocks lists.
@@ -104,6 +106,8 @@ void EntriesHandler::calculateTier() {
 
 		current_tier += 1;
 	}
+
+	std::sort(_list.begin(), _list.end(), tier_key);
 }
 
 std::vector<std::shared_ptr<Entry>> EntriesHandler::getList() {
@@ -118,4 +122,9 @@ bool EntriesHandler::continueCalculate() {
 	}
 	return false;
 }
+
+bool tier_key(std::shared_ptr<Entry> e1, std::shared_ptr<Entry> e2) {
+	return (e1->getTier() < e2->getTier());
+}
+
 #pragma warning( pop )  
