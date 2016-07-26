@@ -14,6 +14,10 @@ std::string Entry::getName() {
 	return _name;
 }
 
+bool Entry::isUnlocked() {
+	return _unlocked;
+}
+
 void Entry::setTier(int tier) {
 	_tier = tier;
 }
@@ -24,6 +28,17 @@ int Entry::getTier() {
 
 std::vector<std::shared_ptr<Entry>> Entry::getRequires() {
 	return _requires;
+}
+
+std::string Entry::requiredLeft() {
+	std::string res = "";
+	for (unsigned int i = 0; i < _requires.size(); i++) {
+		if (!_requires.at(i)->isUnlocked()) {
+			res += _requires.at(i)->getName() + ' ';
+		}
+	}
+
+	return res;
 }
 
 bool Entry::unlock() {
@@ -50,15 +65,11 @@ bool Entry::unlock() {
 
 std::string Entry::toString() {
 	std::string res = _unlocked ? "true" : "false", res2="", res3="";
-	if (_requires.size() != 0) {
-		for (unsigned int i = 0; i < _requires.size(); i++) {
-			res2 += _requires.at(i)->getName() + ' ';
-		}
+	for (unsigned int i = 0; i < _requires.size(); i++) {
+		res2 += _requires.at(i)->getName() + ' ';
 	}
-	if (_unlocks.size() != 0) {
-		for (unsigned int i = 0; i < _unlocks.size(); i++) {
-			res3 += _unlocks.at(i)->getName() + ' ';
-		}
+	for (unsigned int i = 0; i < _unlocks.size(); i++) {
+		res3 += _unlocks.at(i)->getName() + ' ';
 	}
 	return "Name: "		+ _name	+
 		"\n Unlocked: "	+ res	+

@@ -20,9 +20,11 @@ public:
 	void initEntry(std::vector<std::shared_ptr<Entry>> ,
 		std::vector<std::shared_ptr<Entry>> );
 	std::string getName();
+	bool isUnlocked();
 	void setTier(int);
 	int getTier();
 	std::vector<std::shared_ptr<Entry>> getRequires();
+	std::string requiredLeft();
 	bool unlock(); // Unlock this entry if requires is fulfilled.
 	std::string toString();
 private:
