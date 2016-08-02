@@ -1,6 +1,8 @@
 #include <wx\app.h>
+#include <wx\frame.h>
+#include <wx\panel.h>
 #include "EntriesHandler.h"
-#include <iostream>
+#include "EntryButton.h"
 
 #ifdef _UNICODE
 #ifdef _DEBUG
@@ -16,11 +18,18 @@
 #endif
 #endif
 
+#ifndef MAIN_H
+#define MAIN_H
+
 class Main : public wxApp{
 public:
-	Main();
 	virtual bool OnInit() override;
 private:
-	std::shared_ptr<EntriesHandler> _eh;
+	void createButtons();
+	void drawLines();
+	wxPanel * _panel;
+	std::unique_ptr<EntriesHandler> _eh;
+	std::vector<EntryButton*> _buttons;
 };
 
+#endif
