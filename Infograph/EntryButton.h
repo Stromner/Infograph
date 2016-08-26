@@ -1,9 +1,9 @@
+#ifndef ENTRYBUTTON_H
+#define ENTRYBUTTON_H
+
 #include <wx\tglbtn.h>
 #include <wx\panel.h>
 #include "Entry.h"
-
-#ifndef ENTRYBUTTON_H
-#define ENTRYBUTTON_H
 
 const int Y_CORD_BUTTON_SPACING_VAR = 150;
 
